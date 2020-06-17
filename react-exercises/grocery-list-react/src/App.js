@@ -39,7 +39,7 @@ class App extends Component {
 
   handleSubmit = (event) => {
     let items = [...this.state.itemList];
-    let repeatItem = this.state.itemList.filter(item => item.name === this.state.name);
+    let repeatItem = this.state.itemList.filter(item => item.name.toLowerCase() === this.state.name.toLowerCase());
     if(repeatItem.length === 0) {
       items.push({
         name: this.state.name,
@@ -57,11 +57,20 @@ class App extends Component {
     document.getElementById("form").reset();
     event.preventDefault();
   }
+
+  handleRowClick = (event) => {
+    console.log(event.target)
+  }
+
+  getClassName() {
+    let classes = "align-center"
+    return classes;
+  }
   
   render() {
     return (
       <>
-          <table>
+          <table border={1}>
             <thead>
               <tr>
               <th>No.</th>
@@ -75,7 +84,7 @@ class App extends Component {
             <tbody>
             {this.state.itemList.map((item, index )=> {
               return (
-                <tr key={index}>
+                <tr key={index} className={this.getClassName()} onClick={this.handleRowClick}>
                   <td>{index+1}</td>
                   <td>{item["name"]}</td>
                   <td>{item["qnty"]}</td>
@@ -87,15 +96,16 @@ class App extends Component {
             })}
             </tbody>
           </table>
-      <form id="form" className="margin-top" onSubmit={this.handleSubmit}>
-        <div>
-          <input name="name" placeholder="Name" onChange={this.handleInput} required/>
-          <input name="qnty" placeholder="Quantity" onChange={this.handleInput} required/>
-          <input name="price" placeholder="Price" onChange={this.handleInput} required/>
-          <input name="offer"  placeholder="Offer" onChange={this.handleInput} required/>
-          <button type="submit">Add Item</button>
-        </div>
-      </form>
+          <div>
+            <h3 className="margin-top">Add item in the list</h3>
+            <form id="form" onSubmit={this.handleSubmit}>
+                <input name="name" placeholder="Name" onChange={this.handleInput} required/>
+                <input name="qnty" placeholder="Quantity" onChange={this.handleInput} required/>
+                <input name="price" placeholder="Price" onChange={this.handleInput} required/>
+                <input name="offer"  placeholder="Offer" onChange={this.handleInput} required/>
+                <button type="submit">Add Item</button>
+            </form>
+          </div>
       </>
     );
   }
