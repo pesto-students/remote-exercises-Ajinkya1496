@@ -58,18 +58,14 @@ class App extends Component {
     event.preventDefault();
   }
 
-  handleRowClick = (event) => {
-    console.log(event.target)
-  }
-
-  getClassName() {
-    let classes = "align-center"
-    return classes;
+  handlerReset = () => {
+    this.setState({itemList: []});
   }
   
   render() {
     return (
       <>
+        <button className="margin-top margin-bottom" onClick={this.handlerReset}>Reset list</button>
           <table border={1}>
             <thead>
               <tr>
@@ -84,7 +80,7 @@ class App extends Component {
             <tbody>
             {this.state.itemList.map((item, index )=> {
               return (
-                <tr key={index} className={this.getClassName()} onClick={this.handleRowClick}>
+                <tr key={index} className="align-center">
                   <td>{index+1}</td>
                   <td>{item["name"]}</td>
                   <td>{item["qnty"]}</td>
