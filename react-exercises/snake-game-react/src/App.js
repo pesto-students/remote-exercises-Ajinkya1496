@@ -20,11 +20,14 @@ function getRandomPoints() {
   return [pointX, pointY];
 }
 
+let snakeMovement;
+
 const initialState = {
+  running: false,
   foodCount: 0,
   score: 0,
   food: getRandomPoints(),
-  speed: 100,
+  speed: 120,
   direction: DIRECTIONS.RIGHT,
   snakeDots: [
     [0,0],
@@ -38,7 +41,6 @@ class App extends Component {
   state = initialState;
 
   componentDidMount() {
-    setInterval(this.moveSnake, this.state.speed);
     document.onkeydown = this.handleKeyDown;
   }
 
@@ -46,6 +48,11 @@ class App extends Component {
     this.isOutOfGameArea();
     this.isSelfCollapsed();
     this.eatFood();
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(snakeMovement);
+    this.setState(initialState);
   }
 
   handleKeyDown = (event) => {
@@ -63,6 +70,20 @@ class App extends Component {
       case 40:
         this.setState({direction: DIRECTIONS.DOWN})
         break;
+      case 32:
+        this.resumePause();
+        break;  
+    }
+  }
+
+  resumePause() {
+    if(this.state.running === true) {
+      window.clearInterval(snakeMovement);
+      this.setState({running: false});
+    }
+    else {
+      this.setState({running: true});
+      snakeMovement = setInterval(this.moveSnake, this.state.speed);
     }
   }
 
@@ -100,6 +121,7 @@ class App extends Component {
 
   handleGameOver = () => {
     alert("Game over!! Start Again?");
+    window.clearInterval(snakeMovement);
     this.setState(initialState);
   }
 
@@ -162,6 +184,7 @@ class App extends Component {
             <h4 style={{marginTop: 0}}>Instructions</h4>
             <p>Use arrow keys to control movement of snake</p>
             <span> ⬅️ ⬆️ ➡️  ⬇️</span>
+            <p><b>Use spacebar to Pause/Play</b></p>
           </div>
         </div>
       </div>

@@ -29,7 +29,7 @@ code {
 
 .label-area {
   width: 250px;
-  height: 120px;
+  height: auto;
   border: 2px solid #000000;
   border-radius: 10px;
   padding: 10px;
